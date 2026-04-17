@@ -41,14 +41,16 @@ dotnet build --no-restore --configuration Release
 - ビルドせずにカタログ生成すると Source Generator 生成型が欠落する
 
 ### 手順4: カタログ生成
+ModSharp には `.sln` が無く、`Directory.Build.props` と個別の `.csproj` のみ。
+ツールは `--scan` でディレクトリ配下の `.csproj` を自動検出する。
 ```bash
 cd <repo root>
 TOOL_PATH="${MODSHARP_CATALOG_TOOL:-$HOME/tools/ModSharpApiCatalog}"
-SOLUTION=$(find external/modsharp -maxdepth 2 -name "*.sln" | head -1)
 dotnet run --project "$TOOL_PATH" --configuration Release -- \
-    --solution "$SOLUTION" \
+    --scan external/modsharp \
     --output catalog
 ```
+もし将来 ModSharp 側に `.sln` が追加されたら `--solution <path>` も使用可能。
 
 ### 手順5: 変更確認
 ```bash
