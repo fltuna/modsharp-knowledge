@@ -68,9 +68,21 @@ Browse on demand (plain paths — do NOT prefix with `@`):
 4. Check `refs/modsharp-knowledge/patterns/` for a verified precedent.
 5. Scan `refs/modsharp-knowledge/gotchas.md` before committing tricky code.
 
+## Keeping the catalog current
+- Before starting substantial ModSharp work, sanity-check the catalog age.
+  If it looks stale, or if the user mentions an API that isn't in the
+  catalog, suggest refreshing the submodule before proceeding:
+  ```bash
+  git submodule update --remote refs/modsharp-knowledge
+  git commit -m "Update modsharp-knowledge submodule"
+  ```
+- Always commit the submodule pointer bump as its own commit so the
+  refresh is easy to audit and revert.
+- Do not silently refresh without telling the user — the new catalog
+  may change what APIs are visible.
+
 ## Notes
 - Never auto-load `catalog/projects/*/namespaces/*.md` with `@` — some files exceed 60k lines and will blow the context window.
-- Pull catalog updates with `git submodule update --remote refs/modsharp-knowledge`.
 <!-- END modsharp-knowledge integration -->
 ```
 
@@ -86,6 +98,7 @@ Auto-loaded at session start (one `@` per line, nothing else on the line):
 @refs/modsharp-knowledge/gotchas.md
 
 Never auto-load per-namespace files — some exceed 60k lines.
+If the catalog looks stale, suggest `git submodule update --remote refs/modsharp-knowledge` before proceeding.
 <!-- END modsharp-knowledge integration -->
 ```
 
@@ -95,7 +108,8 @@ Offer these blocks individually and assemble only the ones the user chooses:
 - **Always-on refs** — the two `@`-lines for `_index.md` and `gotchas.md`
 - **Browse-on-demand list** — paths to directories Claude should read on demand
 - **Workflow checklist** — the 5-step workflow
-- **Notes** — the "never auto-load large files" reminder and update command
+- **Keep-current reminder** — guidance for suggesting `git submodule update --remote` when the catalog is stale
+- **Notes** — the "never auto-load large files" reminder
 
 Whichever blocks the user picks, wrap the final output with the same
 BEGIN / END markers.

@@ -56,6 +56,15 @@ Browse on demand (plain paths — do NOT prefix with `@`):
 3. Read the relevant `namespaces/<Namespace>.md` file for type signatures.
 4. Check `refs/modsharp-knowledge/patterns/` for a verified precedent before writing new code.
 5. Scan `refs/modsharp-knowledge/gotchas.md` before committing anything non-trivial.
+
+## Keeping the catalog current
+If the catalog looks stale, or the user mentions a ModSharp API that
+isn't in it, suggest refreshing the submodule before proceeding:
+
+    git submodule update --remote refs/modsharp-knowledge
+    git commit -m "Update modsharp-knowledge submodule"
+
+Commit the pointer bump separately so it's easy to audit.
 ```
 
 ### Which files to reference — cheat sheet
