@@ -37,18 +37,16 @@ markers so a later re-run can update it in place.
 ```markdown
 ## ModSharp reference material
 
-Auto-loaded at session start (keep each `@` on its own line, with
-nothing else on the line — the rest of the line is parsed as part
-of the path by Claude Code):
+When working on ModSharp-related code, read on demand (do NOT use
+`@` auto-loading — it has broken Claude Code startup with this
+integration):
 
-@refs/modsharp-knowledge/catalog/_index.md
-@refs/modsharp-knowledge/gotchas.md
-
-Browse on demand (plain paths — do NOT prefix with `@`):
-- `refs/modsharp-knowledge/catalog/projects/Sharp.Shared/_index.md`
-- `refs/modsharp-knowledge/catalog/projects/Sharp.Shared/namespaces/`
-- `refs/modsharp-knowledge/catalog/indexes/`
-- `refs/modsharp-knowledge/patterns/`
+- `refs/modsharp-knowledge/catalog/_index.md` — top-level index, read this first
+- `refs/modsharp-knowledge/gotchas.md` — known pitfalls
+- `refs/modsharp-knowledge/catalog/projects/Sharp.Shared/_index.md` — main consumer-facing API
+- `refs/modsharp-knowledge/catalog/projects/Sharp.Shared/namespaces/` — per-namespace type details
+- `refs/modsharp-knowledge/catalog/indexes/` — cross-cutting indexes
+- `refs/modsharp-knowledge/patterns/` — verified usage patterns
 
 ## Workflow when touching ModSharp APIs
 1. Start from `refs/modsharp-knowledge/catalog/_index.md` to find the right project.
@@ -65,19 +63,27 @@ isn't in it, suggest refreshing the submodule before proceeding:
     git commit -m "Update modsharp-knowledge submodule"
 
 Commit the pointer bump separately so it's easy to audit.
+
+## Notes
+- Never load large per-namespace files unnecessarily — `_global.md` alone exceeds 60k lines.
+- Do not prefix any of the paths above with `@`.
 ```
 
 ### Which files to reference — cheat sheet
 
-| File / directory | Typical size | `@`-load? | Notes |
-|---|---|---|---|
-| `catalog/_index.md` | small | **Yes** | Top-level index, always useful. Put the `@`-ref on its own line |
-| `gotchas.md` | small | **Yes** | Worth keeping hot. Put the `@`-ref on its own line |
-| `catalog/projects/Sharp.Shared/_index.md` | medium | No | Reference by path and let Claude read on demand |
-| `catalog/projects/Sharp.Shared/namespaces/*.md` | **large** (`_global.md` exceeds 60k lines) | **Never** | Auto-loading will blow context |
-| `catalog/indexes/entry-points.md` | medium | Optional | Useful to pin during scaffolding |
-| `catalog/indexes/generated-types.md` | medium | Optional | Useful when working with protobuf / generated code |
-| `patterns/` | small per file | Directory ref | Claude reads individual patterns as needed |
+All references are **plain paths, no `@` prefix**. `@`-auto-loading
+has broken Claude Code startup in this integration; use on-demand
+reads.
+
+| File / directory | Typical size | Notes |
+|---|---|---|
+| `catalog/_index.md` | small | Top-level index, read first when entering ModSharp context |
+| `gotchas.md` | small | Known pitfalls — worth reading before non-trivial changes |
+| `catalog/projects/Sharp.Shared/_index.md` | medium | Main consumer-facing API navigation |
+| `catalog/projects/Sharp.Shared/namespaces/*.md` | **large** (`_global.md` exceeds 60k lines) | Read a specific namespace file only when needed |
+| `catalog/indexes/entry-points.md` | medium | Useful during scaffolding of a new plugin |
+| `catalog/indexes/generated-types.md` | medium | Useful when working with protobuf / generated code |
+| `patterns/` | small per file | Read individual patterns as relevant |
 
 A plugin consumer only needs the submodule. The generator tool at
 `~/tools/ModSharpApiCatalog` is required for **updating** the catalog,

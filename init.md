@@ -48,18 +48,17 @@ markers so a later re-run of this runbook can locate and replace it.
 <!-- BEGIN modsharp-knowledge integration -->
 ## ModSharp reference material
 
-Auto-loaded at session start (keep each `@` on its own line, with
-no trailing prose on the same line — Claude Code parses the rest of
-the line as part of the path):
+When you work on anything ModSharp-related, read these on demand
+(do NOT use `@` auto-loading — some catalog files are huge and
+`@`-prefixed paths in Markdown have caused Claude Code to fail to
+start in this repo's integration history):
 
-@refs/modsharp-knowledge/catalog/_index.md
-@refs/modsharp-knowledge/gotchas.md
-
-Browse on demand (plain paths — do NOT prefix with `@`):
-- `refs/modsharp-knowledge/catalog/projects/Sharp.Shared/_index.md`
-- `refs/modsharp-knowledge/catalog/projects/Sharp.Shared/namespaces/`
-- `refs/modsharp-knowledge/catalog/indexes/`
-- `refs/modsharp-knowledge/patterns/`
+- `refs/modsharp-knowledge/catalog/_index.md` — top-level index, read this first
+- `refs/modsharp-knowledge/gotchas.md` — known pitfalls, skim before committing tricky code
+- `refs/modsharp-knowledge/catalog/projects/Sharp.Shared/_index.md` — main consumer-facing API
+- `refs/modsharp-knowledge/catalog/projects/Sharp.Shared/namespaces/` — per-namespace type details
+- `refs/modsharp-knowledge/catalog/indexes/` — cross-cutting indexes (by-attribute, by-interface, entry-points, generated-types)
+- `refs/modsharp-knowledge/patterns/` — verified usage patterns
 
 ## Workflow when touching ModSharp APIs
 1. Start from `refs/modsharp-knowledge/catalog/_index.md` to find the right project.
@@ -92,24 +91,31 @@ Browse on demand (plain paths — do NOT prefix with `@`):
 <!-- BEGIN modsharp-knowledge integration -->
 ## ModSharp reference material
 
-Auto-loaded at session start (one `@` per line, nothing else on the line):
+When working on ModSharp-related code, read on demand:
 
-@refs/modsharp-knowledge/catalog/_index.md
-@refs/modsharp-knowledge/gotchas.md
+- `refs/modsharp-knowledge/catalog/_index.md` — top-level index
+- `refs/modsharp-knowledge/gotchas.md` — known pitfalls
 
-Never auto-load per-namespace files — some exceed 60k lines.
-If the catalog looks stale, suggest `git submodule update --remote refs/modsharp-knowledge` before proceeding.
+Do not use `@` auto-loading for these paths — it has historically
+broken Claude Code startup in this repo's integration. Never
+auto-load per-namespace files — some exceed 60k lines.
+
+If the catalog looks stale, suggest
+`git submodule update --remote refs/modsharp-knowledge` before proceeding.
 <!-- END modsharp-knowledge integration -->
 ```
 
 ### Custom preset
 Offer these blocks individually and assemble only the ones the user chooses:
 
-- **Always-on refs** — the two `@`-lines for `_index.md` and `gotchas.md`
-- **Browse-on-demand list** — paths to directories Claude should read on demand
+- **Reference list** — plain paths to `_index.md`, `gotchas.md`, and the browsable directories
 - **Workflow checklist** — the 5-step workflow
 - **Keep-current reminder** — guidance for suggesting `git submodule update --remote` when the catalog is stale
-- **Notes** — the "never auto-load large files" reminder
+- **Notes** — the "never auto-load large files" / "do not use `@` prefix" warning
+
+Never include raw `@refs/...` auto-import lines — they have broken
+Claude Code startup and the recommendation is to reference files by
+plain path only.
 
 Whichever blocks the user picks, wrap the final output with the same
 BEGIN / END markers.
