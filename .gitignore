@@ -1,0 +1,20 @@
+# ModSharp build artifacts (中間成果物のみ除外)
+# Source Generator 生成コードは Roslyn 経由で取得するため
+# これらをコミット対象にする必要はない
+external/modsharp/**/bin/
+external/modsharp/**/obj/
+
+# Machine-dependent metadata
+catalog/.meta/generated-at
+
+# IDE
+.vs/
+.idea/
+*.user
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

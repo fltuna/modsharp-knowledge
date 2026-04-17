@@ -1,0 +1,3 @@
+[submodule "external/modsharp"]
+	path = external/modsharp
+	url = https://github.com/Kxnrl/modsharp-public
